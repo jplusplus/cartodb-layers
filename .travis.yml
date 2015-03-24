@@ -1,6 +1,10 @@
 sudo: false
 language: node_js
 node_js:
-  - 'iojs'
-  - '0.12'
-  - '0.10'
+- iojs
+- '0.12'
+- '0.10'
+env:
+  global:
+  - secure: SDlDtXqV1iMYn0RzKmvo4u3ffLI4DrfJoLM75xt/yuxR/a5wtukxF+0lmjpJFIvU8CdrNmsgBo6E15ikVrQ7JMb7MBBu2Z/lTkDHYZ829MrCYE6J7z2Fz9+D81zHJ09DRZJWG9OnrxdWsh+A4PPPISO8xyY+NNYpIy9aE26T8YM=
+  - secure: X+OKhhmWDwKmrtkFhUExrl+cx4lX7YKgkydzVVZeE90JK7A7UwI5oxP8DssogTA7QNog+nvSQRWzZLqQb7n/K3fJb61YKH506h9udvN4K0ZsBHyuUdUhk9+jW2MFXG4HVlwSNIWYG13i0Dq+7H/Il5ZEruE2pZXXwBLipeZ072M=

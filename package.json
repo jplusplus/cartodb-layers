@@ -19,8 +19,11 @@
     "client",
     "api"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "cartodb": "^0.2.1"
+  },
   "devDependencies": {
+    "dotenv": "^1.0.0",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-jshint": "^0.11.0",
     "grunt-contrib-nodeunit": "^0.4.1",
