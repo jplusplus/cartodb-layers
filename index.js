@@ -1,5 +1,7 @@
 'use strict';
 
-module.exports = function (str) {
-  console.log(str || 'Rainbow');
-};
+function CartodbLayer() {
+
+}
+
+module.exports = CartodbLayer
