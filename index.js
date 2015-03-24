@@ -1,7 +1,1 @@
-'use strict';
-
-function CartodbLayer() {
-
-}
-
-module.exports = CartodbLayer
+module.exports = require("./lib/cartodblayer");
