@@ -17,6 +17,9 @@ describe('cartodb-layers module', function () {
   });
 
   it('must have successfully authenticated the user', function (done) {
+    // Crediential must exists
+    assert(secret.USER !== undefined && secret.API_KEY !== undefined, 'Credientials not found.');
+    // Use the given crediential
     var cl = new CartodbLayers({ user: secret.USER, api_key: secret.API_KEY });
     // Event thrown when the client is connected
     cl.on('connect', done);
