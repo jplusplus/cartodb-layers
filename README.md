@@ -1,6 +1,6 @@
 #  [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
-> The best module ever.
+> A wrapper for CartoDB APIs using SQL and REST.
 
 
 ## Install
@@ -9,14 +9,6 @@
 $ npm install --save cartodb-layers
 ```
 
-
-## Usage
-
-```js
-var cartodbLayers = require('cartodb-layers');
-
-cartodbLayers('Rainbow');
-```
 
 
 ## License
