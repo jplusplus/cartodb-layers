@@ -21,7 +21,8 @@
     "api"
   ],
   "dependencies": {
-    "cartodb": "^0.2.1"
+    "cartodb": "^0.2.1",
+    "restler": "^3.2.2"
   },
   "devDependencies": {
     "dotenv": "^1.0.0",
