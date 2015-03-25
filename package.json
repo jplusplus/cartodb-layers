@@ -10,7 +10,8 @@
   "repository": "jplusplus/cartodb-layers",
   "license": "MIT",
   "files": [
-    "index.js"
+    "index.js",
+    "lib/"
   ],
   "keywords": [
     "cartodb-layers",
