@@ -7,4 +7,8 @@ describe('CartoDB REST client', function () {
 
   });
 
+  it('must validate a JSON schema', function () {
+
+  });
+
 });
