@@ -12,7 +12,7 @@
         ]
       }
     },
-    "total_entri_es": {
+    "total_entries": {
       "type": "integer",
       "minimum": 0
     },
