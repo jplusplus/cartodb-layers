@@ -5,7 +5,7 @@ var     assert = require('assert'),
         secret = require('./secret');
 
 
-describe('cartodb-layers module', function () {
+describe('CartoDB instanciation and authentication', function () {
 
   it('must successfully create a CartoLayers instance', function () {
     var cl = new CartodbLayers({});
