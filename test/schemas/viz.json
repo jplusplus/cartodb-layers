@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "properties": {
+    "visualizations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "privacy"
+        ]
+      }
+    },
+    "total_entri_es": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_user_entries": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_shared": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_likes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "required": [
+      "visualizations"
+    ]
+  }
+}
