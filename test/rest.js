@@ -10,6 +10,8 @@ describe('CartoDB REST client', function () {
   this.timeout(10000);
   // Use the given crediential
   var cl = new CartodbLayers({ user: secret.USER, api_key: secret.API_KEY });
+  // Validation schema
+  var schema = require("./schemas/viz.json");
 
   it('must reach per-user CartoDB REST API', function (done) {
     cl.rest.get("v1/viz/?per_page=1").on("complete", function(result) {
@@ -19,20 +21,40 @@ describe('CartoDB REST client', function () {
     });
   });
 
-  it('must validate a JSON schema', function (done) {
-    // Validation schema
-    var schema = require("./schemas/viz.json");
-    // Get some data
-    cl.rest.get("v1/viz/?per_page=1").on("complete", function(result) {
+  it('must build request\'s query', function () {
+    // Pass a page and a number of visualization by page
+    var query = cl.rest.buildQuery(3, 9);
+    assert(query.page === 3, 'The query\'s page is wrong.');
+    assert(query.per_page === 9, 'The number of item per page is wrong.');
+    // Every request must use an API_KEY
+    assert(query.api_key === secret.API_KEY, 'The api key is wrong.');
+  });
+
+
+  it('must not allow negative page', function () {
+    var query = cl.rest.buildQuery(-40);
+    assert(query.page === 1);
+  });
+
+  it('must not allow more than 10 visualization per page', function () {
+    var query = cl.rest.buildQuery(1, 12);
+    assert(query.per_page === 10);
+  });
+
+  it('must fetch layers', function (done) {
+    // Get layer from page 1
+    cl.rest.layers(1,1).on("complete", function(result) {
       // Use json schema validator
       assert( tv4.validate(result, schema),  !tv4.error || tv4.error.message );
       done();
     });
   });
 
-  it('must fetch layers', function (done) {
-    // Get layer from page 1
-    cl.rest.layers(1).on("complete", function() {
+  it('must fetch tables', function (done) {
+    // Get tables from page 1
+    cl.rest.tables(1,1).on("complete", function(result) {
+      // Use json schema validator
+      assert( tv4.validate(result, schema),  !tv4.error || tv4.error.message );
       done();
     });
   });
