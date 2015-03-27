@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "cartodb_id",
+          "the_geom"
+        ]
+      }
+    },
+    "required": [
+      "rows"
+    ]
+  }
+}
