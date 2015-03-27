@@ -6,11 +6,13 @@ CartodbLayers = require('../'),
        secret = require('./secret');
 
 describe('CartoDB REST client', function () {
+  // CartoDB might be slow sometime...
+  this.timeout(10000);
   // Use the given crediential
   var cl = new CartodbLayers({ user: secret.USER, api_key: secret.API_KEY });
 
   it('must reach per-user CartoDB REST API', function (done) {
-    cl.rest.get("v1/viz/").on("complete", function(result) {
+    cl.rest.get("v1/viz/?per_page=1").on("complete", function(result) {
       // Result must not be be an instance of error
       assert(!(result instanceof Error));
       done();
@@ -21,7 +23,7 @@ describe('CartoDB REST client', function () {
     // Validation schema
     var schema = require("./schemas/viz.json");
     // Get some data
-    cl.rest.get("v1/viz/").on("complete", function(result) {
+    cl.rest.get("v1/viz/?per_page=1").on("complete", function(result) {
       // Use json schema validator
       assert( tv4.validate(result, schema),  !tv4.error || tv4.error.message );
       done();
@@ -36,8 +38,8 @@ describe('CartoDB REST client', function () {
   });
 
   it('must fetch layers from page 2', function (done) {
-    // Get layer from page 1
-    cl.rest.layers(1).on("complete", function(result) {
+    // Get 1 layer from page 1
+    cl.rest.layers(1, 1).on("complete", function(result) {
       // We must have at least 2 visualizations
       assert(result.total_entries >= 2, 'Unable to perform the test with less than 2 visualizations.');
       // Save the id of the first visualization for later
