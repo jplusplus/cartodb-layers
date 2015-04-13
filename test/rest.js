@@ -3,7 +3,8 @@
 var    assert = require('assert'),
 CartodbLayers = require('../'),
           tv4 = require('tv4'),
-       secret = require('./secret');
+       secret = require('./secret'),
+      request = require('request');
 
 describe('CartoDB REST client', function () {
   // CartoDB might be slow sometime...
@@ -78,11 +79,12 @@ describe('CartoDB REST client', function () {
       var id = result.visualizations[0].id;
       // Get the viz
       cl.rest.static(id).on("complete", function(config) {
-        console.log( cl.rest.image(config) );
-        // Use json schema validator
-        done();
+        request.get( cl.rest.image(config) ).on('response', function(response) {
+          assert(response.statusCode, 200);
+          assert(response.headers['content-type'], 'image/png');
+          done();
+        });
       });
-
     });
   });
 
