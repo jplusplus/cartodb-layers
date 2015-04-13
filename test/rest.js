@@ -11,7 +11,7 @@ describe('CartoDB REST client', function () {
   // Use the given crediential
   var cl = new CartodbLayers({ user: secret.USER, api_key: secret.API_KEY });
   // Validation schema
-  var schema = require("./schemas/viz.json");
+  var schema = require("./schemas/visualizations.json");
 
   it('must reach per-user CartoDB REST API', function (done) {
     cl.rest.get("v1/viz/?per_page=1").on("complete", function(result) {
@@ -47,6 +47,21 @@ describe('CartoDB REST client', function () {
       // Use json schema validator
       assert( tv4.validate(result, schema),  !tv4.error || tv4.error.message );
       done();
+    });
+  });
+
+  it('must fetch one vizualisation', function (done) {
+    // Get one layer from page 1
+    cl.rest.layers(1,1).on("complete", function(result) {
+      // We must have at least 1 layers
+      assert(result.total_entries >= 1, 'Unable to perform the test with less than 1 layers.');
+      // Save the id of the first visualization for later
+      var id = result.visualizations[0].id;
+      // Get the viz
+      cl.rest.viz(id).on("complete", function(result) {
+        done();
+      });
+
     });
   });
 
