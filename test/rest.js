@@ -97,6 +97,16 @@ describe('CartoDB REST client', function () {
     });
   });
 
+
+  it('must find a search using its name', function (done) {
+    // Get tables from page 1
+    cl.rest.search("land").on("complete", function(result) {
+      // Use json schema validator
+      assert( tv4.validate(result, visualizationsSchema),  !tv4.error || tv4.error.message );
+      done();
+    });
+  });
+
   it('must fetch layers from page 2', function (done) {
     // Get 1 layer from page 1
     cl.rest.layers(1, 1).on("complete", function(result) {
