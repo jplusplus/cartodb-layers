@@ -98,7 +98,7 @@ describe('CartoDB REST client', function () {
   });
 
 
-  it('must find a search using its name', function (done) {
+  it('must search a layer using its name', function (done) {
     // Get tables from page 1
     cl.rest.search("land").on("complete", function(result) {
       // Use json schema validator
