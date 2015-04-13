@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "properties": {
+    "layers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "options"
+        ]
+      }
+    },
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": ["string", "null"]
+    },
+    "description": {
+      "type": ["string", "null"]
+    },
+    "required": [
+      "layers"
+    ]
+  }
+}
