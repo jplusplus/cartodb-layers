@@ -16,6 +16,24 @@ describe('CartoDB REST client', function () {
   // Validation schema for a single visualization
                  vizSchema = require("./schemas/viz.json");
 
+
+  it('must get layer\'s fields', function (done) {
+
+    // Get layer from page 1
+    cl.rest.layers(1,1).on("complete", function(result) {
+      // We must have at least 1 layers
+      assert(result.total_entries >= 1, 'Unable to perform the test with less than 1 layers.');
+      // Save the id of the first visualization for later
+      var id = result.visualizations[0].id;
+      cl.rest.fields(id).on("complete", function(fields) {
+        // Every table contains a column "the_geom"
+        assert(fields.the_geom, 'No column extracted.');
+        done();
+      });
+    });
+
+  });
+
   it('must reach per-user CartoDB REST API', function (done) {
     cl.rest.get("v1/viz/?per_page=1").on("complete", function(result) {
       // Result must not be be an instance of error
@@ -127,5 +145,7 @@ describe('CartoDB REST client', function () {
 
     });
   });
+
+
 
 });
