@@ -1,6 +1,6 @@
 {
   "name": "cartodb-layers",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A wrapper for CartoDB APIs using SQL and REST.",
   "author": {
     "name": "Journalism++",
