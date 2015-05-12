@@ -90,7 +90,7 @@ describe('CartoDB REST client', function () {
 
   it('must fetch one vizualisation\'s image', function (done) {
     // Get one layer from page 1
-    cl.rest.layers(3,1).on("complete", function(result) {
+    cl.rest.layers(1,1).on("complete", function(result) {
       // We must have at least 1 layers
       assert(result.total_entries >= 1, 'Unable to perform the test with less than 1 layers.');
       // Save the id of the first visualization for later
@@ -106,6 +106,23 @@ describe('CartoDB REST client', function () {
     });
   });
 
+  it('must fetch one vizualisation\'s image with no basemap', function (done) {
+    // Get one layer from page 1
+    cl.rest.layers(1,1).on("complete", function(result) {
+      // We must have at least 1 layers
+      assert(result.total_entries >= 1, 'Unable to perform the test with less than 1 layers.');
+      // Save the id of the first visualization for later
+      var id = result.visualizations[0].id;
+      // Get the viz
+      cl.rest.static(id, true).on("complete", function(config) {
+        request.get( cl.rest.image(config) ).on('response', function(response) {
+          assert(response.statusCode, 200);
+          assert(response.headers['content-type'], 'image/png');
+          done();
+        });
+      });
+    });
+  });
   it('must fetch tables', function (done) {
     // Get tables from page 1
     cl.rest.tables(1,1).on("complete", function(result) {
