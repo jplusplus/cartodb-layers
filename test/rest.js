@@ -14,7 +14,9 @@ describe('CartoDB REST client', function () {
   // Validation schema for visualizations list
   var visualizationsSchema = require("./schemas/visualizations.json"),
   // Validation schema for a single visualization
-                 vizSchema = require("./schemas/viz.json");
+                 vizSchema = require("./schemas/viz.json"),
+  // Validation schema for a sql result
+                 sqlSchema = require("./schemas/sql.json");
 
 
   it('must get layer\'s fields', function (done) {
@@ -123,12 +125,30 @@ describe('CartoDB REST client', function () {
       });
     });
   });
+
   it('must fetch tables', function (done) {
     // Get tables from page 1
     cl.rest.tables(1,1).on("complete", function(result) {
       // Use json schema validator
       assert( tv4.validate(result, visualizationsSchema),  !tv4.error || tv4.error.message );
       done();
+    });
+  });
+
+
+  it('must fetch data for a given layer', function (done) {
+    // Get tables from page 1
+    cl.rest.layers(1,1).on("complete", function(result) {
+      // We must have at least 1 layers
+      assert(result.total_entries >= 1, 'Unable to perform the test with less than 1 layers.');
+      // Save the id of the first visualization for later
+      var id = result.visualizations[0].id;
+      // Get the viz
+      cl.rest.data(id).on("complete", function(result) {
+        // Use json schema validator
+        assert( tv4.validate(result, sqlSchema),  !tv4.error || tv4.error.message );
+        done();
+      });
     });
   });
 
