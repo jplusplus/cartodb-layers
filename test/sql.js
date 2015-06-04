@@ -15,7 +15,7 @@ describe('CartoDB SQL projection', function () {
 
   it('must filter a layer using SQL', function (done) {
 
-    cl.rest.tables(1,1).on("complete", function(result) {
+    cl.rest.tables(1,1).then(function(result) {
       // We must have at least 1 layer
       assert(result.total_entries >= 1, 'Unable to perform the test with less than 1 layer.');
 
