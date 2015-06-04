@@ -22,12 +22,12 @@ describe('CartoDB REST client', function () {
   it('must get layer\'s fields', function (done) {
 
     // Get layer from page 1
-    cl.rest.layers(1,1).on("complete", function(result) {
+    cl.rest.layers(1,1).then(function(result) {
       // We must have at least 1 layers
       assert(result.total_entries >= 1, 'Unable to perform the test with less than 1 layers.');
       // Save the id of the first visualization for later
       var id = result.visualizations[0].id;
-      cl.rest.fields(id).on("complete", function(fields) {
+      cl.rest.fields(id).then(function(fields) {
         // Every table contains a column "the_geom"
         assert(fields.the_geom, 'No column extracted.');
         done();
@@ -37,7 +37,7 @@ describe('CartoDB REST client', function () {
   });
 
   it('must reach per-user CartoDB REST API', function (done) {
-    cl.rest.get("v1/viz/?per_page=1").on("complete", function(result) {
+    cl.rest.get("v1/viz/?per_page=1").on('complete', function(result) {
       // Result must not be be an instance of error
       assert(!(result instanceof Error));
       done();
@@ -66,7 +66,7 @@ describe('CartoDB REST client', function () {
 
   it('must fetch layers', function (done) {
     // Get layer from page 1
-    cl.rest.layers(1,1).on("complete", function(result) {
+    cl.rest.layers(1,1).then(function(result) {
       // Use json schema validator
       assert( tv4.validate(result, visualizationsSchema),  !tv4.error || tv4.error.message );
       done();
@@ -75,13 +75,13 @@ describe('CartoDB REST client', function () {
 
   it('must fetch one vizualisation\'s details', function (done) {
     // Get one layer from page 1
-    cl.rest.layers(1,1).on("complete", function(result) {
+    cl.rest.layers(1,1).then(function(result) {
       // We must have at least 1 layers
       assert(result.total_entries >= 1, 'Unable to perform the test with less than 1 layers.');
       // Save the id of the first visualization for later
       var id = result.visualizations[0].id;
       // Get the viz
-      cl.rest.viz(id).on("complete", function(result) {
+      cl.rest.viz(id).then(function(result) {
         // Use json schema validator
         assert( tv4.validate(result, vizSchema),  !tv4.error || tv4.error.message );
         done();
@@ -92,13 +92,13 @@ describe('CartoDB REST client', function () {
 
   it('must fetch one vizualisation\'s image', function (done) {
     // Get one layer from page 1
-    cl.rest.layers(1,1).on("complete", function(result) {
+    cl.rest.layers(1,1).then(function(result) {
       // We must have at least 1 layers
       assert(result.total_entries >= 1, 'Unable to perform the test with less than 1 layers.');
       // Save the id of the first visualization for later
       var id = result.visualizations[0].id;
       // Get the viz
-      cl.rest.static(id).on("complete", function(config) {
+      cl.rest.static(id).then(function(config) {
         request.get( cl.rest.image(config) ).on('response', function(response) {
           assert(response.statusCode, 200);
           assert(response.headers['content-type'], 'image/png');
@@ -110,13 +110,13 @@ describe('CartoDB REST client', function () {
 
   it('must fetch one vizualisation\'s image with no basemap', function (done) {
     // Get one layer from page 1
-    cl.rest.layers(1,1).on("complete", function(result) {
+    cl.rest.layers(1,1).then(function(result) {
       // We must have at least 1 layers
       assert(result.total_entries >= 1, 'Unable to perform the test with less than 1 layers.');
       // Save the id of the first visualization for later
       var id = result.visualizations[0].id;
       // Get the viz
-      cl.rest.static(id, true).on("complete", function(config) {
+      cl.rest.static(id, true).then(function(config) {
         request.get( cl.rest.image(config) ).on('response', function(response) {
           assert(response.statusCode, 200);
           assert(response.headers['content-type'], 'image/png');
@@ -128,13 +128,13 @@ describe('CartoDB REST client', function () {
 
   it('must fetch one vizualisation\'s image with no basemap and a center', function (done) {
     // Get one layer from page 1
-    cl.rest.layers(1,1).on("complete", function(result) {
+    cl.rest.layers(1,1).then(function(result) {
       // We must have at least 1 layers
       assert(result.total_entries >= 1, 'Unable to perform the test with less than 1 layers.');
       // Save the id of the first visualization for later
       var id = result.visualizations[0].id;
       // Get the viz
-      cl.rest.static(id, true).on("complete", function(config) {
+      cl.rest.static(id, true).then(function(config) {
         var url = cl.rest.image(config, 300, 170, 'http', 'png', true);
         request.get(url).on('response', function(response) {
           assert(response.statusCode, 200);
@@ -147,7 +147,7 @@ describe('CartoDB REST client', function () {
 
   it('must fetch tables', function (done) {
     // Get tables from page 1
-    cl.rest.tables(1,1).on("complete", function(result) {
+    cl.rest.tables(1,1).then(function(result) {
       // Use json schema validator
       assert( tv4.validate(result, visualizationsSchema),  !tv4.error || tv4.error.message );
       done();
@@ -157,13 +157,13 @@ describe('CartoDB REST client', function () {
 
   it('must fetch data for a given layer', function (done) {
     // Get tables from page 1
-    cl.rest.layers(1,1).on("complete", function(result) {
+    cl.rest.layers(1,1).then(function(result) {
       // We must have at least 1 layers
       assert(result.total_entries >= 1, 'Unable to perform the test with less than 1 layers.');
       // Save the id of the first visualization for later
       var id = result.visualizations[0].id;
       // Get the viz
-      cl.rest.data(id).on("complete", function(result) {
+      cl.rest.data(id).then(function(result) {
         // Use json schema validator
         assert( tv4.validate(result, sqlSchema),  !tv4.error || tv4.error.message );
         done();
@@ -174,7 +174,7 @@ describe('CartoDB REST client', function () {
 
   it('must search a layer using its name', function (done) {
     // Get tables from page 1
-    cl.rest.search("land").on("complete", function(result) {
+    cl.rest.search("land").then(function(result) {
       // Use json schema validator
       assert( tv4.validate(result, visualizationsSchema),  !tv4.error || tv4.error.message );
       done();
@@ -183,14 +183,14 @@ describe('CartoDB REST client', function () {
 
   it('must fetch layers from page 2', function (done) {
     // Get 1 layer from page 1
-    cl.rest.layers(1, 1).on("complete", function(result) {
+    cl.rest.layers(1, 1).then(function(result) {
       // We must have at least 2 visualizations
       assert(result.total_entries >= 2, 'Unable to perform the test with less than 2 visualizations.');
       // Save the id of the first visualization for later
       var first_id = result.visualizations[0].id;
       // To be sure that there is a second page, we ask less than
       // total number of entries per_page
-      cl.rest.layers(2, ~~(result.total_entries/2) ).on("complete", function(result) {
+      cl.rest.layers(2, ~~(result.total_entries/2) ).then(function(result) {
         // The API must return at least one visualization
         assert(result.visualizations.length > 0, 'Second page must contain layers.');
         // The first visualization of the second page must be different
