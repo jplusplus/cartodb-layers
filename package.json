@@ -24,7 +24,8 @@
   "dependencies": {
     "cartodb": "^0.2.1",
     "lodash": "^3.6.0",
-    "restler": "^3.2.2"
+    "restler": "^3.2.2",
+    "q": "^1.4.1"
   },
   "devDependencies": {
     "dotenv": "^1.0.0",
