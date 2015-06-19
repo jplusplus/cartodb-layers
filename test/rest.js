@@ -8,7 +8,7 @@ CartodbLayers = require('../'),
 
 describe('CartoDB REST client', function () {
   // CartoDB might be slow sometime...
-  this.timeout(40000);
+  this.timeout(20000);
   // Use the given crediential
   var cl = new CartodbLayers({ user: secret.USER, api_key: secret.API_KEY });
   // Validation schema for visualizations list
