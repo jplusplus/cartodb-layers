@@ -1,9 +1,7 @@
 sudo: false
 language: node_js
 node_js:
-- iojs
-- '0.12'
-- '0.10'
+- 10.15.3
 env:
   global:
   - secure: SDlDtXqV1iMYn0RzKmvo4u3ffLI4DrfJoLM75xt/yuxR/a5wtukxF+0lmjpJFIvU8CdrNmsgBo6E15ikVrQ7JMb7MBBu2Z/lTkDHYZ829MrCYE6J7z2Fz9+D81zHJ09DRZJWG9OnrxdWsh+A4PPPISO8xyY+NNYpIy9aE26T8YM=
