@@ -31,6 +31,4 @@ describe('CartoDB SQL projection', function () {
 
   });
 
-  cl.connect();
-
 });

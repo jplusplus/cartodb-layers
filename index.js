@@ -1,2 +1,2 @@
 // Return CartodbLayers class
-module.exports = require("./lib/cartodblayer");
+module.exports = require("./lib");

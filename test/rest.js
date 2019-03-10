@@ -20,7 +20,6 @@ describe('CartoDB REST client', function () {
 
 
   it('must get layer\'s fields', function (done) {
-
     // Get layer from page 1
     cl.rest.layers(1,1).then(function(result) {
       // We must have at least 1 layers
