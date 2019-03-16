@@ -13,28 +13,24 @@ describe('Carto REST client', function () {
   // Validation schema for a sql result
                  sqlSchema = require("./schemas/sql.json");
 
- // CARTO might be slow sometime...
- jest.setTimeout(40000)
+  // CARTO might be slow sometime...
+  jest.setTimeout(40000)
 
-  it('must get layer\'s fields', function () {
+  it('must get layer\'s fields', async function () {
     // Get layer from page 1
-    return cl.rest.layers(1,1).then(function(result) {
-      // We must have at least 1 layers
-      expect(result.total_entries >= 1).toBeTruthy();
-      // Save the id of the first visualization for later
-      return cl.rest.fields(result.visualizations[0].id).then(function(fields) {
-        // Every table contains a column "the_geom"
-        expect(fields.the_geom).toBeTruthy();
-      });
-    });
-
+    const layers = await cl.rest.layers(1,1)
+    // We must have at least 1 layers
+    expect(layers.total_entries).not.toBe(0);
+    // Save the id of the first visualization for later
+    const fields = await cl.rest.fields(layers.visualizations[0].id)
+    // Every table contains a column "the_geom"
+    expect(fields.the_geom).toBeTruthy();
   });
 
-  it('must reach per-user Carto REST API', function (done) {
-    cl.rest.get("v1/viz/?per_page=1").on('complete', function(result) {
+  it('must reach per-user Carto REST API', function () {
+    return cl.rest.get("v1/viz/?per_page=1").then(result => {
       // Result must not be be an instance of error
       expect(result instanceof Error).toBeFalsy();
-      done();
     });
   });
 
@@ -42,22 +38,22 @@ describe('Carto REST client', function () {
     // Pass a page and a number of visualization by page
     var query = cl.rest.buildQuery(3, 9);
     // The query's page is wrong.
-    expect(query.page === 3).toBeTruthy();
+    expect(query.page).toBe(3);
     // The number of item per page is wrong.
-    expect(query.per_page === 9).toBeTruthy();
+    expect(query.per_page).toBe(9);
     // Every request must use an API_KEY
-    expect(query.api_key === secret.API_KEY).toBeTruthy();
+    expect(query.api_key).toBe(secret.API_KEY);
   });
 
 
   it('must not allow negative page', function () {
-    var query = cl.rest.buildQuery(-40);
-    expect(query.page === 1).toBeTruthy();
+    var query = cl.rest.buildParams(-40);
+    expect(query.page).toBe(1);
   });
 
   it('must not allow more than 10 visualization per page', function () {
-    var query = cl.rest.buildQuery(1, 12);
-    expect(query.per_page === 10).toBeTruthy();
+    var query = cl.rest.buildParams(1, 12);
+    expect(query.per_page).toBe(10);
   });
 
   it('must fetch layers', function () {
@@ -72,7 +68,7 @@ describe('Carto REST client', function () {
     // Get one layer from page 1
     return cl.rest.layers(1,1).then(function(result) {
       // We must have at least 1 layers
-      expect(result.total_entries >= 1).toBeTruthy();
+      expect(result.total_entries).not.toBe(0);
       // Save the id of the first visualization for later
       const id = result.visualizations[0].id;
       // Get the viz
@@ -88,7 +84,7 @@ describe('Carto REST client', function () {
     // Get one layer from page 1
     return cl.rest.layers(1,1).then(result => {
       // We must have at least 1 layers
-      expect(result.total_entries >= 1).toBeTruthy();
+      expect(result.total_entries).not.toBe(0);
       // Save the id of the first visualization for later
       var id = result.visualizations[0].id;
       // Get the viz
@@ -106,7 +102,7 @@ describe('Carto REST client', function () {
     // Get one layer from page 1
     return cl.rest.layers(1,1).then(function(result) {
       // We must have at least 1 layers
-      expect(result.total_entries >= 1).toBeTruthy();
+      expect(result.total_entries).not.toBe(0);
       // Save the id of the first visualization for later
       var id = result.visualizations[0].id;
       // Get the viz
@@ -124,7 +120,7 @@ describe('Carto REST client', function () {
     // Get one layer from page 1
     return cl.rest.layers(1,1).then(function(result) {
       // We must have at least 1 layers
-      expect(result.total_entries >= 1).toBeTruthy();
+      expect(result.total_entries).not.toBe(0);
       // Save the id of the first visualization for later
       const id = result.visualizations[0].id;
       // Get the viz
@@ -151,7 +147,7 @@ describe('Carto REST client', function () {
     // Get tables from page 1
     return cl.rest.layers(1,1).then(function(result) {
       // We must have at least 1 layers
-      expect(result.total_entries >= 1).toBeTruthy();
+      expect(result.total_entries).not.toBe(0);
       // Save the id of the first visualization for later
       var id = result.visualizations[0].id;
       // Get the viz
@@ -174,14 +170,14 @@ describe('Carto REST client', function () {
     // Get 1 layer from page 1
     return cl.rest.layers(1, 1).then(function(result) {
       // We must have at least 2 visualizations
-      expect(result.total_entries >= 2).toBeTruthy();
+      expect(result.total_entries).not.toBeLessThan(2);
       // Save the id of the first visualization for later
       var first_id = result.visualizations[0].id;
       // To be sure that there is a second page, we ask less than
       // total number of entries per_page
       return cl.rest.layers(2, ~~(result.total_entries/2) ).then(result => {
         // The API must return at least one visualization
-        expect(result.visualizations.length > 0).toBeTruthy();
+        expect(result.visualizations.length).not.toBe(0);
         // The first visualization of the second page must be different
         // from the one in the first page
         expect(result.visualizations[0].id).not.toBe(first_id);

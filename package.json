@@ -13,6 +13,9 @@
     "index.js",
     "lib/"
   ],
+  "jest": {
+    "testEnvironment": "node"
+  },
   "keywords": [
     "cartodb-layers",
     "cartodb",
@@ -22,6 +25,7 @@
     "api"
   ],
   "dependencies": {
+    "axios": "^0.18.0",
     "cartodb": "^0.5.1",
     "lodash": "^4.17.11",
     "q": "^1.4.1",

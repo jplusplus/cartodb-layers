@@ -4,7 +4,6 @@ var     assert = require('assert'),
        CartoDB = require('cartodb'),
         secret = require('./secret');
 
-
 describe('Carto instanciation', function () {
 
   it('must successfully create a CartoLayers instance', function () {
