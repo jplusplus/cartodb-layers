@@ -15,9 +15,9 @@ describe('Carto SQL projection', function () {
   it('must filter a layer using SQL', function (done) {
     cl.rest.tables(1,1).then(function(result) {
       // We must have at least 1 layer
-      expect(result.total_entries).toBeGeaterThan(0);
+      expect(result.total_entries).not.toBe(0);
       const table = result.visualizations[0].name;
-      cl.client.query('SELECT * FROM {table}', { table }, function(err, data) {
+      cl.client.execute(`SELECT * FROM ${table}`).done(function(data) {
         // Use json schema validator
         expect(tv4.validate(data, schema)).toBeTruthy();
         done();
