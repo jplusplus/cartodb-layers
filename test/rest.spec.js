@@ -27,10 +27,10 @@ describe('Carto REST client', function () {
 
   });
 
-  it('must reach per-user CartoDB REST API', function (done) {
+  it('must reach per-user Carto REST API', function (done) {
     cl.rest.get("v1/viz/?per_page=1").on('complete', function(result) {
       // Result must not be be an instance of error
-      expect(!(result instanceof Error)).toBeTruthy();
+      expect(result instanceof Error).toBeFalsy();
       done();
     });
   });
@@ -61,7 +61,7 @@ describe('Carto REST client', function () {
     // Get layer from page 1
     return cl.rest.layers(1,1).then(function(result) {
       // Use json schema validator
-      expect( tv4.validate(result, visualizationsSchema),  !tv4.error || tv4.error.message ).toBeTruthy();
+      expect( tv4.validate(result, visualizationsSchema) ).toBeTruthy();
     });
   });
 
@@ -71,11 +71,11 @@ describe('Carto REST client', function () {
       // We must have at least 1 layers
       expect(result.total_entries >= 1).toBeTruthy();
       // Save the id of the first visualization for later
-      var id = result.visualizations[0].id;
+      const id = result.visualizations[0].id;
       // Get the viz
       return cl.rest.viz(id).then(function(result) {
         // Use json schema validator
-        expect( tv4.validate(result, vizSchema),  !tv4.error || tv4.error.message ).toBeTruthy();
+        expect( tv4.validate(result, vizSchema) ).toBeTruthy();
       });
 
     });
@@ -90,10 +90,10 @@ describe('Carto REST client', function () {
       var id = result.visualizations[0].id;
       // Get the viz
       return cl.rest.static(id).then(config => {
-        console.log(cl.rest.image(config))
-        return request( cl.rest.image(config) ).then(response => {
-          expect(response.statusCode, 200).toBeTruthy();
-          expect(response.headers['content-type'], 'image/png').toBeTruthy();
+        const url = cl.rest.image(config)
+        return request({ resolveWithFullResponse: true, url }).then(response => {
+          expect(response.statusCode).toBe(200);
+          expect(response.headers['content-type']).toBe('image/png');
         });
       });
     });
@@ -108,9 +108,10 @@ describe('Carto REST client', function () {
       var id = result.visualizations[0].id;
       // Get the viz
       return cl.rest.static(id, true).then(function(config) {
-        return request( cl.rest.image(config) ).then(function(response) {
-          expect(response.statusCode, 200).toBeTruthy();
-          expect(response.headers['content-type'], 'image/png').toBeTruthy();
+        const url = cl.rest.image(config)
+        return request({ resolveWithFullResponse: true, url }).then(function(response) {
+          expect(response.statusCode).toBe(200);
+          expect(response.headers['content-type']).toBe('image/png');
         });
       });
     });
@@ -122,13 +123,13 @@ describe('Carto REST client', function () {
       // We must have at least 1 layers
       expect(result.total_entries >= 1).toBeTruthy();
       // Save the id of the first visualization for later
-      var id = result.visualizations[0].id;
+      const id = result.visualizations[0].id;
       // Get the viz
       return cl.rest.static(id, true).then(function(config) {
-        var url = cl.rest.image(config, 300, 170, 'http', 'png', true);
-        request(url).then(function(response) {
-          expect(response.statusCode, 200).toBeTruthy();
-          expect(response.headers['content-type'], 'image/png').toBeTruthy();
+        const url = cl.rest.image(config, 300, 170, 'http', 'png', true);
+        request({ resolveWithFullResponse: true, url }).then(function(response) {
+          expect(response.statusCode).toBe(200);
+          expect(response.headers['content-type']).toBe('image/png');
         });
       });
     });
@@ -138,7 +139,7 @@ describe('Carto REST client', function () {
     // Get tables from page 1
     cl.rest.tables(1,1).then(function(result) {
       // Use json schema validator
-      expect( tv4.validate(result, visualizationsSchema),  !tv4.error || tv4.error.message ).toBeTruthy();
+      expect( tv4.validate(result, visualizationsSchema) ).toBeTruthy();
     });
   });
 
@@ -153,16 +154,16 @@ describe('Carto REST client', function () {
       // Get the viz
       return cl.rest.data(id).then(function(result) {
         // Use json schema validator
-        expect( tv4.validate(result, sqlSchema),  !tv4.error || tv4.error.message ).toBeTruthy();
+        expect( tv4.validate(result, sqlSchema) ).toBeTruthy();
       });
     });
   });
 
   it('must search a layer using its name', function () {
     // Get tables from page 1
-    return cl.rest.search("land").then(function(result) {
+    return cl.rest.search("land").then(result => {
       // Use json schema validator
-      expect( tv4.validate(result, visualizationsSchema),  !tv4.error || tv4.error.message ).toBeTruthy();
+      expect( tv4.validate(result, visualizationsSchema) ).toBeTruthy();
     });
   });
 
@@ -175,15 +176,15 @@ describe('Carto REST client', function () {
       var first_id = result.visualizations[0].id;
       // To be sure that there is a second page, we ask less than
       // total number of entries per_page
-      return cl.rest.layers(2, ~~(result.total_entries/2) ).then(function() {
+      return cl.rest.layers(2, ~~(result.total_entries/2) ).then(result => {
         // The API must return at least one visualization
         expect(result.visualizations.length > 0).toBeTruthy();
         // The first visualization of the second page must be different
         // from the one in the first page
-        expect(first_id !== result.visualizations[0].id).toBeTruthy();
+        expect(result.visualizations[0].id).not.toBe(first_id);
       });
     });
   });
 
-// CartoDB might be slow sometime...
+// CARTO might be slow sometime...
 }, 40000);
