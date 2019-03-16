@@ -13,6 +13,9 @@ describe('Carto REST client', function () {
   // Validation schema for a sql result
                  sqlSchema = require("./schemas/sql.json");
 
+ // CARTO might be slow sometime...
+ jest.setTimeout(40000)
+
   it('must get layer\'s fields', function () {
     // Get layer from page 1
     return cl.rest.layers(1,1).then(function(result) {
@@ -185,6 +188,4 @@ describe('Carto REST client', function () {
       });
     });
   });
-
-// CARTO might be slow sometime...
-}, 40000);
+});
