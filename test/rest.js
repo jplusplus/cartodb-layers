@@ -18,15 +18,13 @@ describe('Carto REST client', function () {
   // Validation schema for a sql result
                  sqlSchema = require("./schemas/sql.json");
 
-
   it('must get layer\'s fields', function () {
     // Get layer from page 1
     return cl.rest.layers(1,1).then(function(result) {
       // We must have at least 1 layers
       assert(result.total_entries >= 1, 'Unable to perform the test with less than 1 layers.');
       // Save the id of the first visualization for later
-      var id = result.visualizations[0].id;
-      return cl.rest.fields(id).then(function(fields) {
+      return cl.rest.fields(result.visualizations[0].id).then(function(fields) {
         // Every table contains a column "the_geom"
         assert(fields.the_geom, 'No column extracted.');
       });
@@ -34,10 +32,11 @@ describe('Carto REST client', function () {
 
   });
 
-  it('must reach per-user CartoDB REST API', function () {
-    return cl.rest.get("v1/viz/?per_page=1").on('complete', function(result) {
+  it('must reach per-user CartoDB REST API', function (done) {
+    cl.rest.get("v1/viz/?per_page=1").on('complete', function(result) {
       // Result must not be be an instance of error
       assert(!(result instanceof Error));
+      done();
     });
   });
 

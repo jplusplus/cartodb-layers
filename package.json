@@ -42,6 +42,7 @@
     "tv4": "^1.1.9"
   },
   "scripts": {
-    "test": "npx grunt"
+    "test": "npx grunt",
+    "lint": "npx grunt jshint"
   }
 }
