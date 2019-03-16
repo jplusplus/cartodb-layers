@@ -17,7 +17,7 @@ describe('Carto SQL projection', function () {
       // We must have at least 1 layer
       expect(result.total_entries).not.toBe(0);
       const table = result.visualizations[0].name;
-      cl.client.execute(`SELECT * FROM ${table}`).done(function(data) {
+      cl.client.execute(`SELECT * FROM ${table} LIMIT 2`).done(function(data) {
         // Use json schema validator
         expect(tv4.validate(data, schema)).toBeTruthy();
         done();
