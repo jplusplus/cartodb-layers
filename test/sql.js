@@ -5,7 +5,7 @@ var    assert = require('assert'),
           tv4 = require('tv4'),
 CartodbLayers = require('../');
 
-describe('CartoDB SQL projection', function () {
+describe('Carto SQL projection', function () {
   // CartoDB might be slow sometime...
   this.timeout(40000);
   // Use the given crediential
