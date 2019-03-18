@@ -12,15 +12,14 @@ describe('Carto SQL projection', function () {
   // CARTO might be slow sometime...
   jest.setTimeout(40000)
 
-  it('must filter a layer using SQL', function (done) {
-    cl.rest.tables(1,1).then(function(result) {
-      // We must have at least 1 layer
-      expect(result.total_entries).not.toBe(0);
-      const table = result.visualizations[0].name;
-      cl.client.execute(`SELECT * FROM ${table} LIMIT 2`).done(function(data) {
-        // Use json schema validator
-        expect(tv4.validate(data, schema)).toBeTruthy();
-        done();
+  it('must filter a layer using SQL', done => {
+    cl.rest.memoized.layers(1,1).then(result => {
+      cl.rest.memoized.vizTable(result.visualizations[0].id).then(table => {
+        cl.client.execute(`SELECT * FROM ${table} LIMIT 2`).done(data => {
+          // Use json schema validator
+          expect(tv4.validate(data, schema)).toBeTruthy();
+          done();
+        })
       });
     });
   });

@@ -33,11 +33,10 @@ describe('Carto REST client', function () {
     expect(fields.the_geom).toBeTruthy();
   });
 
-  it('must reach per-user Carto REST API', function () {
-    return cl.rest.get("v1/viz/?per_page=1").then(result => {
-      // Result must not be be an instance of error
-      expect(result instanceof Error).toBeFalsy();
-    });
+  it('must reach per-user Carto REST API', async function () {
+    const result = await cl.rest.get("v1/viz/?per_page=1")
+    // Result must not be be an instance of error
+    expect(result instanceof Error).toBeFalsy();
   });
 
   it('must build request\'s query', function () {
@@ -111,12 +110,11 @@ describe('Carto REST client', function () {
     expect(response.headers['content-type']).toBe('image/png');
   });
 
-  it('must fetch tables', function () {
+  it('must fetch tables', async function () {
     // Get tables from page 1
-    cl.rest.tables(1,1).then(function(result) {
-      // Use json schema validator
-      expect( tv4.validate(result, visualizationsSchema) ).toBeTruthy();
-    });
+    const result = await cl.rest.tables(1,1)
+    // Use json schema validator
+    expect( tv4.validate(result, visualizationsSchema) ).toBeTruthy();
   });
 
   it('must fetch data for a given layer', async function () {
