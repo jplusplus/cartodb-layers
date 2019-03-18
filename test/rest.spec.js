@@ -18,8 +18,8 @@ describe('Carto REST client', function () {
   jest.setTimeout(40000)
 
   async function getRandomVizId () {
-    const { visualizations } = await cl.rest.memoized.layers();
-    return sample([visualizations[0]]).id;
+    const { visualizations } = await cl.rest.memoized.layers(1, 1);
+    return sample(visualizations).id;
   }
 
   async function getRandomViz () {
@@ -136,8 +136,8 @@ describe('Carto REST client', function () {
 
   it('must fetch layers from page 2', async function () {
     var id = await getRandomVizId();
-    const { total_entries } = await cl.rest.layers()
     // total number of entries per_page
+    const { total_entries } = await cl.rest.layers()
     const result = await cl.rest.layers(2, ~~(total_entries/2) )
     // The API must return at least one visualization
     expect(result.visualizations.length).not.toBe(0);
