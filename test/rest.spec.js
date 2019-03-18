@@ -1,7 +1,8 @@
 const CartodbLayers = require('../'),
                 tv4 = require('tv4'),
              secret = require('./secret'),
-              axios = require('axios');
+              axios = require('axios'),
+             sample = require('lodash/sample');
 
 describe('Carto REST client', function () {
   // Use the given crediential
@@ -16,13 +17,18 @@ describe('Carto REST client', function () {
   // CARTO might be slow sometime...
   jest.setTimeout(40000)
 
+  async function getRandomVizId () {
+    const { visualizations } = await cl.rest.memoized.layers();
+    return sample([visualizations[0]]).id;
+  }
+
+  async function getRandomViz () {
+    return cl.rest.memoized.viz(await getRandomVizId())
+  }
+
   it('must get layer\'s fields', async function () {
-    // Get layer from page 1
-    const layers = await cl.rest.layers(1,1)
-    // We must have at least 1 layers
-    expect(layers.total_entries).not.toBe(0);
     // Save the id of the first visualization for later
-    const fields = await cl.rest.fields(layers.visualizations[0].id)
+    const fields = await cl.rest.fields(await getRandomVizId())
     // Every table contains a column "the_geom"
     expect(fields.the_geom).toBeTruthy();
   });
@@ -43,7 +49,6 @@ describe('Carto REST client', function () {
     expect(query.per_page).toBe(9);
   });
 
-
   it('must not allow negative page', function () {
     var query = cl.rest.buildParams(-40);
     expect(query.page).toBe(1);
@@ -54,35 +59,28 @@ describe('Carto REST client', function () {
     expect(query.per_page).toBe(10);
   });
 
-  it('must fetch layers', function () {
+  it('must fetch layers', async function () {
     // Get layer from page 1
-    return cl.rest.layers(1,1).then(function(result) {
-      // Use json schema validator
-      expect( tv4.validate(result, visualizationsSchema) ).toBeTruthy();
-    });
+    const result = await cl.rest.layers(1,1)
+    // Use json schema validator
+    expect( tv4.validate(result, visualizationsSchema) ).toBeTruthy();
   });
 
   it('must fetch one vizualisation\'s details',  async function () {
-    // Get one layer from page 1
-    const layers = await cl.rest.layers(1,1);
-    // We must have at least 1 layers
-    expect(layers.total_entries).not.toBe(0);
-    // Save the id of the first visualization for later
-    const id = layers.visualizations[0].id;
     // Get the viz
-    const viz = await cl.rest.viz(id);
+    const viz = await getRandomViz();
     // Use json schema validator
     expect( tv4.validate(viz, vizSchema) ).toBeTruthy();
   });
 
+  it('must fetch one vizualisation\'s details with an `imported_at` attribute',  async function () {
+    // Get the viz
+    expect(await getRandomViz()).toHaveProperty('imported_at');
+  });
+
   it('must fetch one vizualisation\'s image', async function () {
-    // Get one layer from page 1
-    const layers = await cl.rest.layers(1,1);
-    // We must have at least 1 layers
-    expect(layers.total_entries).not.toBe(0);
-    // Save the id of the first visualization for later
-    const id = layers.visualizations[0].id;
     // Get the static
+    const id = await getRandomVizId();
     const config = await cl.rest.static(id);
     const url = cl.rest.image(config);
     const response = await axios.get(url);
@@ -92,13 +90,8 @@ describe('Carto REST client', function () {
   });
 
   it('must fetch one vizualisation\'s image with no basemap',  async function () {
-    // Get one layer from page 1
-    const layers = await cl.rest.layers(1,1);
-    // We must have at least 1 layers
-    expect(layers.total_entries).not.toBe(0);
-    // Save the id of the first visualization for later
-    const id = layers.visualizations[0].id;
     // Get the static
+    const id = await getRandomVizId();
     const config = await cl.rest.static(id, true);
     const url = cl.rest.image(config);
     const response = await axios.get(url);
@@ -108,13 +101,8 @@ describe('Carto REST client', function () {
   });
 
   it('must fetch one vizualisation\'s image with no basemap and a center', async function () {
-    // Get one layer from page 1
-    const layers = await cl.rest.layers(1,1);
-    // We must have at least 1 layers
-    expect(layers.total_entries).not.toBe(0);
-    // Save the id of the first visualization for later
-    const id = layers.visualizations[0].id;
     // Get the static
+    const id = await getRandomVizId();
     const config = await cl.rest.static(id, true)
     const url = cl.rest.image(config, 300, 170, 'http', 'png', true);
     const response = await axios.get(url)
@@ -132,13 +120,8 @@ describe('Carto REST client', function () {
   });
 
   it('must fetch data for a given layer', async function () {
-    // Get tables from page 1
-    const layers = await cl.rest.layers(1,1)
-    // We must have at least 1 layers
-    expect(layers.total_entries).not.toBe(0);
-    // Save the id of the first visualization for later
-    var id = layers.visualizations[0].id;
     // Get the viz
+    const id = await getRandomVizId();
     const result = await cl.rest.data(id)
     // Use json schema validator
     expect( tv4.validate(result, sqlSchema) ).toBeTruthy();
@@ -151,22 +134,15 @@ describe('Carto REST client', function () {
     expect( tv4.validate(result, visualizationsSchema) ).toBeTruthy();
   });
 
-  it('must fetch layers from page 2', function () {
-    // Get 1 layer from page 1
-    return cl.rest.layers(1, 1).then(function(result) {
-      // We must have at least 2 visualizations
-      expect(result.total_entries).not.toBeLessThan(2);
-      // Save the id of the first visualization for later
-      var first_id = result.visualizations[0].id;
-      // To be sure that there is a second page, we ask less than
-      // total number of entries per_page
-      return cl.rest.layers(2, ~~(result.total_entries/2) ).then(result => {
-        // The API must return at least one visualization
-        expect(result.visualizations.length).not.toBe(0);
-        // The first visualization of the second page must be different
-        // from the one in the first page
-        expect(result.visualizations[0].id).not.toBe(first_id);
-      });
-    });
+  it('must fetch layers from page 2', async function () {
+    var id = await getRandomVizId();
+    const { total_entries } = await cl.rest.layers()
+    // total number of entries per_page
+    const result = await cl.rest.layers(2, ~~(total_entries/2) )
+    // The API must return at least one visualization
+    expect(result.visualizations.length).not.toBe(0);
+    // The first visualization of the second page must be different
+    // from the one in the first page
+    expect(result.visualizations[0].id).not.toBe(id);
   });
 });
