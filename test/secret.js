@@ -1,14 +1,16 @@
 'use strict';
 
 var join = require("path").join,
-  exists = require('fs').existsSync;
+  exists = require('fs').existsSync,
+  dotenv = require('dotenv');
 
 // Path to the env file
-var env  = join(__dirname, '..', '.env');
+const path = join(__dirname, '..', '.env');
+
 // Check that the env file exists
-if( exists(env) ) {
+if( exists(path) ) {
   // Load environement variables from .env
-  require('dotenv').load({ path: env });
+  dotenv.config({ path });
 }
 
 module.exports = {
