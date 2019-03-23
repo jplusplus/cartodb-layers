@@ -18,7 +18,7 @@ describe('Carto REST client', function () {
   jest.setTimeout(40000)
 
   async function getRandomVizId () {
-    const { visualizations } = await cl.rest.memoized.layers(1, 1);
+    const { visualizations } = await cl.rest.memoized.layers(1, 20);
     return sample(visualizations).id;
   }
 
