@@ -27,6 +27,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "cartodb": "^0.5.1",
+    "json-query": "^2.2.2",
     "lodash": "^4.17.11",
     "q": "^1.4.1"
   },

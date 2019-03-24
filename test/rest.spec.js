@@ -2,7 +2,8 @@ const CartodbLayers = require('../'),
                 tv4 = require('tv4'),
              secret = require('./secret'),
               axios = require('axios'),
-             sample = require('lodash/sample');
+             sample = require('lodash/sample'),
+               Rest = require('../lib/rest');
 
 describe('Carto REST client', function () {
   // Use the given crediential
@@ -18,7 +19,7 @@ describe('Carto REST client', function () {
   jest.setTimeout(40000)
 
   async function getRandomVizId () {
-    const { visualizations } = await cl.rest.memoized.layers(1, 20);
+    const { visualizations } = await cl.rest.memoized.layers(5, 1);
     return sample(visualizations).id;
   }
 
@@ -143,4 +144,54 @@ describe('Carto REST client', function () {
     // from the one in the first page
     expect(result.visualizations[0].id).not.toBe(id);
   });
+
+  it('must find the values using the a json-query', async function () {
+    const viz = {
+      layers: [
+        {
+          type: 'somethnig',
+          wrong: []
+        },
+        {
+          type: "namedmap",
+          options: { 
+            named_map: {
+              layers: [
+                {
+                  layer_name: "table"
+                }
+              ]
+            }
+          }
+        },
+        {
+          type: 'layergroup',
+          options: {
+            layer_definition: {
+              layers: [
+                {
+                  foo: 'bar',
+                  options: {
+                    barr: 'foo'
+                  }
+                },
+                {
+                  options: {
+                    table_name: 'table',
+                    sql: 'SELECT * FROM table'
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+    const sql = Rest.queryCollection(viz, 'layers[*type=layergroup].options.layer_definition.layers.options.sql').value
+    expect(sql).toContain('SELECT * FROM table')
+    const tableFromLayergroup = Rest.queryCollection(viz, 'layers[*type=layergroup].options.layer_definition.layers.options.table_name').value
+    expect(tableFromLayergroup).toContain('table')
+    const tableFromNamedMap = Rest.queryCollection(viz, 'layers[*type=namedmap].options.named_map.layers.layer_name').value
+    expect(tableFromNamedMap).toContain('table')
+  })
 });
