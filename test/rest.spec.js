@@ -187,11 +187,11 @@ describe('Carto REST client', function () {
         }
       ]
     }
-    const sql = Rest.queryCollection(viz, 'layers[*type=layergroup].options.layer_definition.layers.options.sql').value
-    expect(sql).toContain('SELECT * FROM table')
-    const tableFromLayergroup = Rest.queryCollection(viz, 'layers[*type=layergroup].options.layer_definition.layers.options.table_name').value
-    expect(tableFromLayergroup).toContain('table')
-    const tableFromNamedMap = Rest.queryCollection(viz, 'layers[*type=namedmap].options.named_map.layers.layer_name').value
-    expect(tableFromNamedMap).toContain('table')
+    const sql = Rest.queryCollection(viz, 'layers[*type=layergroup].options.layer_definition.layers.options.sql')
+    expect(sql).toBe('SELECT * FROM table')
+    const tableFromLayergroup = Rest.queryCollection(viz, 'layers[*type=layergroup].options.layer_definition.layers.options.table_name')
+    expect(tableFromLayergroup).toBe('table')
+    const tableFromNamedMap = Rest.queryCollection(viz, 'layers[*type=namedmap].options.named_map.layers.layer_name')
+    expect(tableFromNamedMap).toBe('table')
   })
 });
