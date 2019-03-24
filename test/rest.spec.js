@@ -145,6 +145,12 @@ describe('Carto REST client', function () {
     expect(result.visualizations[0].id).not.toBe(id);
   });
 
+  it('must extract the table name from an SQL query', function() {
+    expect(Rest.sqlQueryToTable('select * from erde_klima')).toBe('erde_klima')
+    expect(Rest.sqlQueryToTable('select * from erde_klima where true = true')).toBe('erde_klima')
+    expect(Rest.sqlQueryToTable('SELECT * FROM erde_klima')).toBe('erde_klima')
+  })
+
   it('must find the values using the a json-query', async function () {
     const viz = {
       layers: [
