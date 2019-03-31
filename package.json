@@ -29,7 +29,8 @@
     "cartodb": "^0.5.1",
     "json-query": "^2.2.2",
     "lodash": "^4.17.11",
-    "q": "^1.4.1"
+    "q": "^1.5.1",
+    "turbo-carto": "^0.21.1"
   },
   "devDependencies": {
     "dotenv": "^7.0.0",
