@@ -1,6 +1,8 @@
 ## Classes
 
 <dl>
+<dt><a href="#CartodbLayers">CartodbLayers</a></dt>
+<dd></dd>
 <dt><a href="#Memoizable">Memoizable</a></dt>
 <dd><p>Abstract Class to implement memoized methods</p>
 </dd>
@@ -12,23 +14,46 @@
 </dd>
 </dl>
 
-<a name="Memoizable"></a>
+<a name="CartodbLayers"></a>
 
-## Memoizable
-Abstract Class to implement memoized methods
-
+## CartodbLayers
 **Kind**: global class  
 **Properties**
 
-| Name | Description |
-| --- | --- |
-| methods | All the methods of the class |
-| memoized | All the methods of the class, but memoized (no expiration) |
+| Name | Type | Description |
+| --- | --- | --- |
+| client | <code>CartoDB.SQL</code> | CartoDB SQL client |
+| rest | [<code>Rest</code>](#Rest) | Rest client |
+| turbocarto | [<code>Turbocarto</code>](#Turbocarto) | TruboCARTO client |
+
+<a name="new_CartodbLayers_new"></a>
+
+### new CartodbLayers()
+Main class to expose all the module of this library
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [args.user] | <code>String</code> | <code>cartodb</code> | CARTO username |
+| args.api_key | <code>String</code> |  | CARTO api key |
+
+<a name="Memoizable"></a>
+
+## *Memoizable*
+Abstract Class to implement memoized methods
+
+**Kind**: global abstract class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| methods | <code>Object</code> | All the methods of the class |
+| memoized | <code>Object</code> | All the methods of the class, but memoized (no expiration) |
 
 <a name="Memoizable+throttled"></a>
 
-### memoizable.throttled([wait]) ⇒ <code>Object</code>
-Returns the methods of class, wrapped inside a throttled function
+### *memoizable.throttled([wait]) ⇒ <code>Object</code>*
+Returns the methods of the class, wrapped inside a throttled function
 
 **Kind**: instance method of [<code>Memoizable</code>](#Memoizable)  
 **Returns**: <code>Object</code> - All the methods of the class  
