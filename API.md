@@ -2,7 +2,8 @@
 
 <dl>
 <dt><a href="#CartodbLayers">CartodbLayers</a></dt>
-<dd></dd>
+<dd><p>Main class to expose all the module of this library</p>
+</dd>
 <dt><a href="#Memoizable">Memoizable</a></dt>
 <dd><p>Abstract Class to implement memoized methods</p>
 </dd>
@@ -17,6 +18,8 @@
 <a name="CartodbLayers"></a>
 
 ## CartodbLayers
+Main class to expose all the module of this library
+
 **Kind**: global class  
 **Properties**
 
@@ -29,8 +32,6 @@
 <a name="new_CartodbLayers_new"></a>
 
 ### new CartodbLayers()
-Main class to expose all the module of this library
-
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
