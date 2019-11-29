@@ -51,6 +51,21 @@ Abstract Class to implement memoized methods
 | methods | <code>Object</code> | All the methods of the class |
 | memoized | <code>Object</code> | All the methods of the class, but memoized (no expiration) |
 
+
+* *[Memoizable](#Memoizable)*
+    * *[new Memoizable()](#new_Memoizable_new)*
+    * *[.throttled([wait])](#Memoizable+throttled) ⇒ <code>Object</code>*
+
+<a name="new_Memoizable_new"></a>
+
+### *new Memoizable()*
+This abstract class should not call this constructor method or an error
+will be thrown.
+
+**Throws**:
+
+- <code>Error</code> Thrown when the class is called directly.
+
 <a name="Memoizable+throttled"></a>
 
 ### *memoizable.throttled([wait]) ⇒ <code>Object</code>*
