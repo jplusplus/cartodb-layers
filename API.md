@@ -1,13 +1,41 @@
 ## Classes
 
 <dl>
+<dt><a href="#Memoizable">Memoizable</a></dt>
+<dd><p>Abstract Class to implement memoized methods</p>
+</dd>
 <dt><a href="#Rest">Rest</a></dt>
 <dd><p>Class to communicate with CARTO Rest API</p>
 </dd>
 <dt><a href="#Turbocarto">Turbocarto</a></dt>
-<dd><p>Class to manipulate TurboCarto strings.</p>
+<dd><p>Class to manipulate TurboCARTO strings.</p>
 </dd>
 </dl>
+
+<a name="Memoizable"></a>
+
+## Memoizable
+Abstract Class to implement memoized methods
+
+**Kind**: global class  
+**Properties**
+
+| Name | Description |
+| --- | --- |
+| methods | All the methods of the class |
+| memoized | All the methods of the class, but memoized (no expiration) |
+
+<a name="Memoizable+throttled"></a>
+
+### memoizable.throttled([wait]) ⇒ <code>Object</code>
+Returns the methods of class, wrapped inside a throttled function
+
+**Kind**: instance method of [<code>Memoizable</code>](#Memoizable)  
+**Returns**: <code>Object</code> - All the methods of the class  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [wait] | <code>Number</code> | <code></code> | Throttle duration in millisecond. The `null` means no limitations. |
 
 <a name="Rest"></a>
 
@@ -520,7 +548,7 @@ Get the table from a given SQL query
 <a name="Turbocarto"></a>
 
 ## Turbocarto
-Class to manipulate TurboCarto strings.
+Class to manipulate TurboCARTO strings.
 
 **Kind**: global class  
 
@@ -541,12 +569,12 @@ Create a Turbocarto instance
 <a name="Turbocarto+turbocartoToCartocss"></a>
 
 ### turbocarto.turbocartoToCartocss(turbocarto, sql) ⇒ <code>Promise</code>
-Populate the TurboCarto strings with data from an SQL query in order to generate CartoCSS.
+Populate the TurboCARTO strings with data from an SQL query in order to generate CartoCSS.
 
 **Kind**: instance method of [<code>Turbocarto</code>](#Turbocarto)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| turbocarto | <code>string</code> | TurboCarto string. |
+| turbocarto | <code>string</code> | TurboCARTO string. |
 | sql | <code>string</code> | SQL query to read data. |
 
