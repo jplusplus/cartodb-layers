@@ -1,6 +1,6 @@
 #  [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
-> A wrapper for CartoDB APIs using SQL and REST.
+> A wrapper for CARTO APIs using SQL and REST.
 
 
 ## Install
@@ -9,12 +9,9 @@
 $ npm install --save cartodb-layers
 ```
 
-
-
 ## License
 
 MIT © [Journalism++](http://jplusplus.org)
-
 
 [npm-image]: https://badge.fury.io/js/cartodb-layers.svg
 [npm-url]: https://npmjs.org/package/cartodb-layers
