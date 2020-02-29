@@ -1,7 +1,7 @@
 ## Classes
 
 <dl>
-<dt><a href="#CartodbLayers">CartodbLayers</a></dt>
+<dt><a href="#CartodbLayers">CartodbLayers</a> ⇐ <code>Stream</code></dt>
 <dd><p>Main class to expose all the module of this library</p>
 </dd>
 <dt><a href="#Memoizable">Memoizable</a></dt>
@@ -17,10 +17,11 @@
 
 <a name="CartodbLayers"></a>
 
-## CartodbLayers
+## CartodbLayers ⇐ <code>Stream</code>
 Main class to expose all the module of this library
 
 **Kind**: global class  
+**Extends**: <code>Stream</code>  
 **Properties**
 
 | Name | Type | Description |

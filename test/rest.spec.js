@@ -89,6 +89,26 @@ describe('Carto REST client', function () {
     expect(response.headers['content-type']).toBe('image/png');
   });
 
+  it('must fetch one vizualisation\'s image with pictograms', async function() {
+    const id = 'fec13603-c70a-456e-8716-442d5f69c557';
+    const config = await cl.rest.static(id);
+    const url = cl.rest.image(config);
+    const response = await axios.get(url);
+    // Checks the image is correct
+    expect(response.status).toBe(200);
+    expect(response.headers['content-type']).toBe('image/png');
+  })
+
+  it('must fetch one vizualisation\'s image with geometry', async function() {
+    const id = '6c3af479-5e76-4585-932b-b3935ad6a170';
+    const config = await cl.rest.static(id);
+    const url = cl.rest.image(config);
+    const response = await axios.get(url);
+    // Checks the image is correct
+    expect(response.status).toBe(200);
+    expect(response.headers['content-type']).toBe('image/png');
+  })
+
   it('must fetch one vizualisation\'s image with no basemap',  async function () {
     // Get the static
     const id = await getRandomVizId();
@@ -149,6 +169,12 @@ describe('Carto REST client', function () {
     expect(Rest.sqlQueryToTable('select * from erde_klima')).toBe('erde_klima')
     expect(Rest.sqlQueryToTable('select * from erde_klima where true = true')).toBe('erde_klima')
     expect(Rest.sqlQueryToTable('SELECT * FROM erde_klima')).toBe('erde_klima')
+  })
+
+  it('must extract table name from a SQL with database prefix', async function() {
+    const sql = 'SELECT * FROM "bsv-westermann".export_output_3'
+    const table = Rest.sqlQueryToTable(sql)
+    expect(table).toBe('export_output_3');
   })
 
   it('must find the values using the a json-query', async function () {
