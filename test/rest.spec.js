@@ -209,36 +209,6 @@ describe('Carto REST client', function () {
     expect(axios.post(instantiate_url, {})).resolves.not.toThrow()
   })
 
-  it('must instantiate a public named map, created from a private dataset', async function() {
-    // This map is private
-    // https://westermann-gruppe.carto.com/u/bsv-westermann/builder/b1ad0119-619c-4747-93a5-1c2899b37e6b
-
-    // Delete any exist named map
-    const name = 'dtpl_test_public_named_map_b1ad0119-619c-4747-93a5-1c2899b37e6b'
-    await cl.rest.deleteNamedMapIfExist(name)
-
-    // The auth method must be "open"
-    const version = '0.0.1'
-    const auth = { method: 'open' }
-    const placeholders = []
-    const layergroup = {
-      "layers": [{
-        "type": "cartodb",
-        "options": {
-          "cartocss_version": "2.1.1",
-          "cartocss": "#layer { }",
-          "sql": "SELECT * FROM ttt_test_heiko_pt",
-          "interactivity": ["name", "hoehe"]
-        }
-      }]
-    }
-    // Create the named map
-    await cl.rest.createNamedMap({ name, version, auth, placeholders, layergroup })
-    // Instantiate the named map using axios
-    const instantiate_url = `https://${secret.USER}.carto.com/api/v1/map/named/${name}?auth_token=open&api_key=default_public`
-    expect(axios.post(instantiate_url, {})).resolves.not.toThrow()
-  })
-
   it('must not instantiate a named map without token, created from a private dataset', async function() {
     // This map is private
     // https://westermann-gruppe.carto.com/u/bsv-westermann/builder/b1ad0119-619c-4747-93a5-1c2899b37e6b
