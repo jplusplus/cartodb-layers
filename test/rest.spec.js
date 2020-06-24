@@ -211,10 +211,10 @@ describe('Carto REST client', function () {
 
   it('must not instantiate a named map without token, created from a private dataset', async function() {
     // This map is private
-    // https://westermann-gruppe.carto.com/u/bsv-westermann/builder/b1ad0119-619c-4747-93a5-1c2899b37e6b
+    // https://westermann-gruppe.carto.com/u/bsv-westermann/builder/ea9d7606-1973-4f0a-9f3e-dccba3f71f95
 
     // Delete any exist named map
-    const name = 'dtpl_test_private_named_map_without_token_b1ad0119-619c-4747-93a5-1c2899b37e6b'
+    const name = 'dtpl_test_private_named_map_without_token_ea9d7606-1973-4f0a-9f3e-dccba3f71f95'
     await cl.rest.deleteNamedMapIfExist(name)
 
     // The auth method must use a "token"
@@ -227,7 +227,7 @@ describe('Carto REST client', function () {
         "options": {
           "cartocss_version": "2.1.1",
           "cartocss": "#layer { }",
-          "sql": "SELECT * FROM ttt_test_heiko_pt",
+          "sql": "SELECT * FROM eu_wirtschaftskraft_1",
           "interactivity": ["name", "hoehe"]
         }
       }]
@@ -242,10 +242,10 @@ describe('Carto REST client', function () {
 
   it('must instantiate a private named map using a token, created from a private map', async function() {
     // This map is private
-    // https://westermann-gruppe.carto.com/u/bsv-westermann/builder/b1ad0119-619c-4747-93a5-1c2899b37e6b
+    // https://westermann-gruppe.carto.com/u/bsv-westermann/builder/ea9d7606-1973-4f0a-9f3e-dccba3f71f95
 
     // Delete any exist named map
-    const name = 'dtpl_test_private_named_map_with_token_b1ad0119-619c-4747-93a5-1c2899b37e6b'
+    const name = 'dtpl_test_private_named_map_with_token_ea9d7606-1973-4f0a-9f3e-dccba3f71f95'
     await cl.rest.deleteNamedMapIfExist(name)
 
     // The auth method must use a "token"
@@ -258,7 +258,7 @@ describe('Carto REST client', function () {
         "options": {
           "cartocss_version": "2.1.1",
           "cartocss": "#layer { }",
-          "sql": "SELECT * FROM ttt_test_heiko_pt",
+          "sql": "SELECT * FROM eu_wirtschaftskraft_1",
           "interactivity": ["name", "hoehe"]
         }
       }]
