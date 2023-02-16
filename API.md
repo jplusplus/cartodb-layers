@@ -112,7 +112,7 @@ Class to communicate with CARTO Rest API
         * [.getNamedMap(name)](#Rest+getNamedMap) ⇒ <code>Promise</code>
         * [.getNamedMaps()](#Rest+getNamedMaps) ⇒ <code>Promise</code>
         * [.importedAt()](#Rest+importedAt) ⇒ <code>String</code>
-        * [.uniqueNamedMapId(id)](#Rest+uniqueNamedMapId) ⇒ <code>String</code>
+        * [.uniqueNamedMapId(id, [prefix])](#Rest+uniqueNamedMapId) ⇒ <code>String</code>
         * [.projection(id, name, cartocss, sql, interactivity)](#Rest+projection) ⇒ <code>Promise</code>
         * [.vizNewNamedMap(id, name, cartocss, sql, interactivity)](#Rest+vizNewNamedMap) ⇒ <code>Promise</code>
         * [.basemapLayer()](#Rest+basemapLayer) ⇒ <code>Object</code>
@@ -390,14 +390,15 @@ Get the current date as a locale string in UTC timezone
 **Kind**: instance method of [<code>Rest</code>](#Rest)  
 <a name="Rest+uniqueNamedMapId"></a>
 
-### rest.uniqueNamedMapId(id) ⇒ <code>String</code>
+### rest.uniqueNamedMapId(id, [prefix]) ⇒ <code>String</code>
 Get a unique named map id based on the date
 
 **Kind**: instance method of [<code>Rest</code>](#Rest)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>String</code> | Named Map name (or id) |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| id | <code>String</code> |  | Named Map name (or id) |
+| [prefix] | <code>String</code> | <code>&quot;dtpl&quot;</code> | Prefix to all namedMap ids |
 
 <a name="Rest+projection"></a>
 
